@@ -1,0 +1,36 @@
+﻿<div id="body">
+    <ul id="tools"></ul>
+</div>
+<form id="saveToolForm" method="post">
+    <h3>Add a new Tool</h3>
+    <p>
+        <label for="toolId">Tool Id:</label>
+        <input type="text" name="Id" />
+    </p>
+    <p>
+        <label for="toolName">Tool Name:</label>
+        <input type="text" name="Name" />
+    </p>
+    <input type="button" id="saveTool" value="Save" />
+</form>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $.getJSON('/api/tools', function (toolsJsonPayload) {
+                $(toolsJsonPayload).each(function (i, item) {
+                    $('#tools').append('<li>' + item.Name + '</li>');
+                });
+            });
+        });
+
+        $('#saveTool').click(function () {
+            $.post("api/tools",
+                $("#saveToolForm").serialize(),
+                function (value) {
+                    $('#tools').append('<li>' + value.Name + '</li>');
+                },
+                "json"
+            );
+        });
+    </script>
+}
